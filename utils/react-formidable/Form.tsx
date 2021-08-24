@@ -19,11 +19,17 @@ const Form = ({ children, onSubmit, background, padding, maxWidth, className }: 
         event.preventDefault()
 
         let has_data = Object.keys(store.data).length ? true : false
+        let has_errors = Object.keys(store.data_errors).length ? true : false
 
-        has_data
-            ? onSubmit(store.data)
-            : onSubmit({ error: { message: 'this form has never been touched' } })
+        if (!has_data) {
+            return onSubmit({ error: { message: 'this form has never been touched' } })
+        }
 
+        if (has_errors) {
+            return onSubmit({ error: { message: 'this form has invalid fields' }, data: store.data })
+        }
+
+        return onSubmit({ data: store.data })
     }
 
     return (

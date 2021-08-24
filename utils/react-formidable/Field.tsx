@@ -1,9 +1,9 @@
 interface IProps {
     id: string,
     type: string,
-    required: boolean,
+    required?: boolean,
     label: string,
-    minLength: number
+    minLength?: number
 }
 
 import { useStore } from './useStore'
@@ -22,6 +22,11 @@ const Field = ({ id, type, required = false, label, minLength = 1 }: IProps) => 
 
     function check_field_value(value: string) {
 
+        state.set_data_errors({
+            ...state.data_errors,
+            [`${id}`]: ''
+        })
+
         if (required && value === "") {
             return state.set_data_errors({
                 ...state.data_errors,
@@ -29,10 +34,12 @@ const Field = ({ id, type, required = false, label, minLength = 1 }: IProps) => 
             })
         }
 
-        state.set_data_errors({
-            ...state.data_errors,
-            [`${id}`]: undefined
-        })
+        if (value === "") {
+            state.set_data_errors({
+                ...state.data_errors,
+                [`${id}`]: undefined
+            })
+        }
 
         if (type === 'email') {
             if (value?.indexOf("@") === -1 || value?.indexOf(".") === -1) {
@@ -50,10 +57,14 @@ const Field = ({ id, type, required = false, label, minLength = 1 }: IProps) => 
             })
         }
 
-        return state.set_data_errors({
-            ...state.data_errors,
-            [`${id}`]: ``
-        })
+        if (id === 'pass' || id === 'pass2') {
+            if (state.data.pass !== state.data.pass2) {
+                return state.set_data_errors({
+                    ...state.data_errors,
+                    [`pass2`]: `Esta senha não é a mesma da anterior`
+                })
+            }
+        }
     }
 
     return (
