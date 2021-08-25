@@ -6,7 +6,7 @@ interface IProps {
     minLength?: number
 }
 
-import { useStore } from './useStore'
+import { useStore } from '../useStore'
 
 import { useEffect } from 'react'
 

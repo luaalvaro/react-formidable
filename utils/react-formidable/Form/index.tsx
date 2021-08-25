@@ -9,7 +9,7 @@ interface IProps {
 
 import { FormEvent } from "react"
 
-import { useStore } from "./useStore"
+import { useStore } from "../useStore"
 
 const Form = ({ children, onSubmit, background, padding, maxWidth, className }: IProps) => {
 
