@@ -1,20 +1,21 @@
 interface IProps {
-    text: string
+    children: string
 }
 
-const Button = ({ text }: IProps) => (
+const Button = ({ children }: IProps) => (
     <>
         <button
             style={{
-                border: '1px solid rgba(0,0,0,0.4)',
+                border: 'none',
                 background: '#405090',
                 color: '#fff',
-                padding: '8px 22px',
+                padding: '5px 25px',
                 borderRadius: '4px',
                 cursor: "pointer",
+                marginTop: '15px'
             }}
         >
-            {text}
+            {children}
         </button>
     </>
 )

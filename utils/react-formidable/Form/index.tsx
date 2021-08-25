@@ -1,17 +1,18 @@
 interface IProps {
     children: JSX.Element,
-    onSubmit: (data: object) => {},
+    onSubmit: (data: object) => object,
     background: string,
     padding: string,
     maxWidth: string,
     className: string,
+    margin: string,
 }
 
 import { FormEvent } from "react"
 
 import { useStore } from "../useStore"
 
-const Form = ({ children, onSubmit, background, padding, maxWidth, className }: IProps) => {
+const Form = ({ children, onSubmit, background, padding, maxWidth, className, margin, }: IProps) => {
 
     const store = useStore(state => state)
 
@@ -26,7 +27,8 @@ const Form = ({ children, onSubmit, background, padding, maxWidth, className }: 
         }
 
         if (has_errors) {
-            return onSubmit({ error: { message: 'this form has invalid fields' }, data: store.data })
+            console.log()
+            return onSubmit({ error: { message: 'this form has invalid fields', err: store.data_errors }, data: store.data })
         }
 
         return onSubmit({ data: store.data })
@@ -40,7 +42,8 @@ const Form = ({ children, onSubmit, background, padding, maxWidth, className }: 
                 width: '100%',
                 maxWidth: maxWidth,
                 background: background,
-                padding: padding
+                padding: padding,
+                margin: margin
             }}
         >
             {children}

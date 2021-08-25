@@ -10,7 +10,7 @@ import { useStore } from '../useStore'
 
 import { useEffect } from 'react'
 
-const Field = ({ id, type, required = false, label, minLength = 1 }: IProps) => {
+const Field = ({ id, type, label, required, minLength }: IProps) => {
 
     const state = useStore(state => state)
 
@@ -22,46 +22,36 @@ const Field = ({ id, type, required = false, label, minLength = 1 }: IProps) => 
 
     function check_field_value(value: string) {
 
-        state.set_data_errors({
-            ...state.data_errors,
-            [`${id}`]: ''
-        })
+        state.set_data_errors({})
 
-        if (required && value === "") {
-            return state.set_data_errors({
-                ...state.data_errors,
-                [`${id}`]: 'Este campo é obrigatório'
-            })
+        if (required == null && minLength == null) {
+            return
         }
 
-        if (value === "") {
-            state.set_data_errors({
-                ...state.data_errors,
-                [`${id}`]: undefined
-            })
-        }
+        if (required) {
+            if (value == null) {
+                return
+            }
 
-        if (type === 'email') {
-            if (value?.indexOf("@") === -1 || value?.indexOf(".") === -1) {
+            if (value === "") {
                 return state.set_data_errors({
                     ...state.data_errors,
-                    [`${id}`]: 'Preencha um email válido'
+                    [`${id}`]: 'This field is required'
                 })
             }
         }
 
-        if (value?.length < minLength) {
-            return state.set_data_errors({
-                ...state.data_errors,
-                [`${id}`]: `Preencha pelo menos ${minLength} caracteres`
-            })
-        }
+        if (minLength >= 0) {
+            let length = value.length
 
-        if (id === 'pass' || id === 'pass2') {
-            if (state.data.pass !== state.data.pass2) {
+            if (value == null) {
+                return
+            }
+
+            if (length < minLength) {
                 return state.set_data_errors({
                     ...state.data_errors,
-                    [`pass2`]: `Esta senha não é a mesma da anterior`
+                    [`${id}`]: `Fill in at least ${minLength} characters`
                 })
             }
         }

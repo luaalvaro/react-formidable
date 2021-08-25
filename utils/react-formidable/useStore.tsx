@@ -1,10 +1,13 @@
 import create from "zustand"
 
 interface IProps {
-
+    data: object,
+    set_data: () => null,
+    data_errors: object,
+    set_data_errors: () => null
 }
 
-const useStore = create(set => ({
+const useStore: IProps = create(set => ({
     data: {},
     set_data: (new_data: object) => set(state => ({ data: new_data })),
 
